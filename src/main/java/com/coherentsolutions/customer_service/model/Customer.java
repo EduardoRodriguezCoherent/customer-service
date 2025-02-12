@@ -49,10 +49,13 @@ public class Customer {
     private LocalDate birthDate;
 
     @Column(nullable = false)
-    private boolean isActive;
+    private boolean active;
 
     @Column(name = "membership_id")
     private UUID membershipId;
+
+    @Column(name = "club_name", nullable = false)
+    private String clubName;
 
     @Override
     public boolean equals(Object o) {
