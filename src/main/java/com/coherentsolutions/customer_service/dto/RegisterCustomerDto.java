@@ -9,6 +9,7 @@ public record RegisterCustomerDto(
         String password,
         String phone,
         String location,
-        LocalDate birthDate
+        LocalDate birthDate,
+        String clubName
 ) {
 }

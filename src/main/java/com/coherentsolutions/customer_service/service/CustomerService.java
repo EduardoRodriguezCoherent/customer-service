@@ -12,4 +12,6 @@ public interface CustomerService {
     CustomerDto getById(Long id);
 
     CustomerDto save(RegisterCustomerDto registerCustomerDto);
+
+    CustomerDto assignClub(Long id, String clubName);
 }

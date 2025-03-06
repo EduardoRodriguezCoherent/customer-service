@@ -12,7 +12,6 @@ public interface CustomerMapper {
     @Mapping(target = "password", ignore = true)
     Customer dtoToCustomer(CustomerDto customerDto);
 
-    @Mapping(target = "active", ignore = true)
     @Mapping(target = "membershipId", ignore = true)
     Customer dtoToCustomer(RegisterCustomerDto registerCustomerDto);
 

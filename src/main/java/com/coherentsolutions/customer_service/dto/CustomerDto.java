@@ -11,7 +11,6 @@ public record CustomerDto(
         String phone,
         String location,
         LocalDate birthDate,
-        boolean isActive,
         UUID membershipId,
         String clubName
 ) {

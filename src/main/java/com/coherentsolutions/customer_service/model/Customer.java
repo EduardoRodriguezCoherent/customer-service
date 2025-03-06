@@ -48,13 +48,10 @@ public class Customer {
     @Column(nullable = false, name = "birth_date")
     private LocalDate birthDate;
 
-    @Column(nullable = false)
-    private boolean active;
-
     @Column(name = "membership_id")
     private UUID membershipId;
 
-    @Column(name = "club_name", nullable = false)
+    @Column(name = "club_name")
     private String clubName;
 
     @Override

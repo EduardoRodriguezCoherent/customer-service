@@ -6,6 +6,8 @@ import com.coherentsolutions.customer_service.mapper.CustomerMapper;
 import com.coherentsolutions.customer_service.model.Customer;
 import com.coherentsolutions.customer_service.repository.CustomerRepository;
 import com.coherentsolutions.customer_service.service.CustomerService;
+import com.coherentsolutions.customer_service.service.MembershipService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,11 +18,15 @@ import java.util.UUID;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
+    private static final String DEFAULT_MEMBERSHIP_TYPE = "BASIC";
+
     private final CustomerRepository customerRepository;
+    private final MembershipService membershipService;
     private final CustomerMapper customerMapper;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, MembershipService membershipService, CustomerMapper customerMapper) {
         this.customerRepository = customerRepository;
+        this.membershipService = membershipService;
         this.customerMapper = customerMapper;
     }
 
@@ -39,13 +45,21 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public CustomerDto save(RegisterCustomerDto registerCustomerDto) {
         Customer customer = customerMapper.dtoToCustomer(registerCustomerDto);
+        UUID membershipId = membershipService.createMembership(DEFAULT_MEMBERSHIP_TYPE);
 
-        customer.setActive(true); // Set the customer as active by default
-        customer.setMembershipId(UUID.randomUUID()); // Generate a new membership ID
-        customer.setClubName("Default Club"); // Assign a default club name
+        customer.setMembershipId(membershipId);
 
+        return customerMapper.customerToCustomerDto(customerRepository.save(customer));
+    }
+
+    @Override
+    public CustomerDto assignClub(Long id, String clubName) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found with id: " + id));
+        customer.setClubName(clubName);
         return customerMapper.customerToCustomerDto(customerRepository.save(customer));
     }
 }
