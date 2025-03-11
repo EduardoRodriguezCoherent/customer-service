@@ -14,4 +14,6 @@ public interface CustomerService {
     CustomerDto save(RegisterCustomerDto registerCustomerDto);
 
     CustomerDto assignClub(Long id, String clubName);
+
+    boolean existsByEmail(String email);
 }

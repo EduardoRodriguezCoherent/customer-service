@@ -8,6 +8,8 @@ import com.coherentsolutions.customer_service.repository.CustomerRepository;
 import com.coherentsolutions.customer_service.service.CustomerService;
 import com.coherentsolutions.customer_service.service.MembershipService;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,6 +21,7 @@ import java.util.UUID;
 public class CustomerServiceImpl implements CustomerService {
 
     private static final String DEFAULT_MEMBERSHIP_TYPE = "BASIC";
+    private static final Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
     private final CustomerRepository customerRepository;
     private final MembershipService membershipService;
@@ -61,5 +64,14 @@ public class CustomerServiceImpl implements CustomerService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found with id: " + id));
         customer.setClubName(clubName);
         return customerMapper.customerToCustomerDto(customerRepository.save(customer));
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        if (customerRepository.existsByEmail(email)) {
+            log.warn("Customer with email {} already exists. Skipping this entry.", email);
+            return true;
+        }
+        return false;
     }
 }

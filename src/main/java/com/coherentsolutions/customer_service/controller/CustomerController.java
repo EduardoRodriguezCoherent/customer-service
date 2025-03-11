@@ -46,4 +46,9 @@ public class CustomerController {
         CustomerDto customerDtoWithClub = customerService.assignClub(userId, clubName);
         return ResponseEntity.ok(customerDtoWithClub);
     }
+
+    @GetMapping("/validate-email")
+    public ResponseEntity<Boolean> validateEmail(@RequestParam String email) {
+        return ResponseEntity.ok(customerService.existsByEmail(email));
+    }
 }
