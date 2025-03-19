@@ -14,7 +14,7 @@ To run the application locally, ensure you have the following:
 - **Docker (optional)** – If you prefer running MySQL in a container.
 - **Discovery Service** – This microservice relies on a service discovery component. Ensure it is running before starting this service.
 - **Membership Service** – This microservice relies on a membership service, since it is used to generate the UUID 
-to create the customer. However, this logic is handled by the **orchestrator-service** so you must not call directly
+to create the customer. However, this logic is handled by the **orchestrator-service**, so you must not call directly
 this service or any other.
 
 ## Setup Instructions
